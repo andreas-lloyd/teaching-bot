@@ -21,6 +21,9 @@ class TwitterBot(Teacher):
         # Initiate the API
         self.create_api(credentials)
 
+        # Get own user id
+        self.user_id = self.api.me().id
+
     def create_api(self, credentials):
         """Wrap up the creation of the API that we will exploit."""
         auth = tweepy.OAuthHandler(
@@ -55,7 +58,7 @@ class TwitterBot(Teacher):
                 inc_message = message.message_create['message_data']['text']
 
                 # Messages come in time order so just save the first to reply to it
-                if sender not in pending_messages:
+                if sender not in pending_messages and sender != self.user_id:
                     pending_messages[sender] = inc_message
                 
                 # We want to delete all messages
