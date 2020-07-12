@@ -8,12 +8,15 @@ class Teacher():
     """
     def __init__(self, bot_config):
         with open(bot_config) as yaml_file:
-            self.bot_options = yaml.load(yaml_file)
+            self.bot_options = yaml.load(yaml_file, Loader=yaml.FullLoader)
     
     def log_error(self, error):
-        pass
+        print(error)
 
-    def get_message(self, option):
+    def is_first(self, user_id):
+        return True
+
+    def get_reply(self, option):
         """Get the message that we want to send."""
         if option == 'introduction':
             return ('SUCCESS', self.bot_options['messages']['introduction'])
@@ -22,17 +25,17 @@ class Teacher():
         else:
             return ('ERROR', 'No message related to the specified option') 
 
-    def process_message(self, inc_message):
-        """Take the incoming message and according to the logic provide the get_message function with the right arguments.
+    def process_message(self, user_id, inc_message):
+        """Take the incoming message and according to the logic provide the get_reply function with the right arguments.
         Note that everything that comes in should be responded to in some way (i.e. we always give feedback to the user),
-        which is why everything returns the `get_message` function, but the backend aspects are all dealt with here.
+        which is why everything returns the `get_reply` function, but the backend aspects are all dealt with here.
         """
         # The first thing to do is to check if they asked for any of our options
         if inc_message not in self.bot_options['interaction']['user_options'].values():
             # Now check if this is the first message we send to them - otherwise ask for help
-            if self.is_first():
-                return self.get_message('introduction')
+            if self.is_first(user_id):
+                return self.get_reply('introduction')
             else:
-                return self.get_message('not found')
+                return self.get_reply('not found')
         else:
-            return self.get_message(self.bot_options['interaction']['user_options'][inc_message])
+            return self.get_reply(self.bot_options['interaction']['user_options'][inc_message])

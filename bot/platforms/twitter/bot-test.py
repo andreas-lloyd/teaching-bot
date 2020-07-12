@@ -6,9 +6,8 @@ if __name__ == '__main__':
     with open('bot-creds.creds') as json_file:
         credentials = json.load(json_file)
 
-    twitter_bot = TwitterBot(credentials)
+    twitter_bot = TwitterBot(credentials, '../../bot-config.yaml')
     
-    while True:
-        twitter_bot.start_stream()
+    twitter_bot.stream_messages()
 
     print('Done!')
