@@ -1,0 +1,10 @@
+messages:
+  introduction: "Hello! I am the teacher bot and I want to help you master data science. What do you want to do?"
+  no_article: "Sorry, no more articles for today!" 
+  help: "I am the teacher bot and I'm here to help you master data science, to interact with me send any of the following messages:\nHelp: Ask for help\nSend me an article: Ask for an article"
+  not_found: "Sorry, I don't understand what you mean - you can ask for help by sending 'help'" 
+
+interaction:
+  user_options:
+    wants_article: "send me an article"
+    help: "help"

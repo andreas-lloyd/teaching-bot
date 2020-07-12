@@ -1,0 +1,2 @@
+# Bot
+This is where we will keep all code regarding the actual bot itself. The idea will be to create a top layer class that will be able to handle all of the logic for the bot, and then when we deploy it to a specific platform (Twitter, Reddit...), we will load in specific functions to handle things like how to actually send a message.
