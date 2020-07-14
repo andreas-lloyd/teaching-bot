@@ -15,14 +15,16 @@ class TwitterBot(Teacher):
     unless we move to do it Tweet based, which would probably be more complicated as would
     need to track replies and stuff.
     """
-    def __init__(self, credentials, bot_config):
+    def __init__(self, credentials, bot_config, debugging=False):
         super().__init__(bot_config)
+
+        self.debugging = debugging
 
         # Initiate the API
         self.create_api(credentials)
 
         # Get own user id
-        self.user_id = self.api.me().id
+        self.user_id = str(self.api.me().id)
 
     def create_api(self, credentials):
         """Wrap up the creation of the API that we will exploit."""
@@ -38,7 +40,8 @@ class TwitterBot(Teacher):
     def send_message(self, destination, out_message):
         """A wrapper to send a message with error handling."""
         if out_message[0] != 'ERROR':
-            self.api.send_direct_message(destination, out_message[1])
+            sent_message = self.api.send_direct_message(destination, out_message[1])
+            return sent_message.id
         else:
             self.log_error(out_message[0])
 
@@ -50,6 +53,9 @@ class TwitterBot(Teacher):
         while True:
             messages = self.api.list_direct_messages()
             print(f'Processing {len(messages)} messages')
+            
+            if self.debugging:
+                print(messages)
 
             pending_messages = {}
             message_ids = []
@@ -61,15 +67,23 @@ class TwitterBot(Teacher):
                 if sender not in pending_messages and sender != self.user_id:
                     pending_messages[sender] = inc_message
                 
-                # We want to delete all messages
+                # We want to delete all messages - moving this for now because might be deleting messages before they can arrive
                 message_ids.append(message.id)
             
-            for user_id in pending_messages:
-                self.send_message(sender, self.process_message(user_id, pending_messages[user_id]))
+            if self.debugging:
+                print(pending_messages)
+
+            for sender_id in pending_messages:
+                if self.debugging:
+                    print(sender)
+                    print(self.process_message(sender_id, pending_messages[sender_id]))
+
+                # Process the message and send it - update the list to delete our own message
+                message_ids.append(self.send_message(sender_id, self.process_message(sender_id, pending_messages[sender_id])))
                 time.sleep(message_wait)
 
-            for message in message_ids:
-                self.api.destroy_direct_message(message)
+            for message_id in message_ids:
+                self.api.destroy_direct_message(message_id)
                 time.sleep(delete_wait)
 
             time.sleep(refresh_rate)

@@ -26,3 +26,6 @@ NOTE that userstream is gone - need to filter - i guess could filter for users t
 
 Filter is only for tweets so to do it messagewise, must list messages and refresh
 - What we could do is take tweets and delete them, which would delete them for us but not for them - this would stop us needing to keep a log
+
+------------
+Implemented the bad streaming, pretty sure it's working but might need to go over how it is working - not sure if taking MY messages as well
