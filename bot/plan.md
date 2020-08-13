@@ -29,3 +29,17 @@ Filter is only for tweets so to do it messagewise, must list messages and refres
 
 ------------
 Implemented the bad streaming, pretty sure it's working but might need to go over how it is working - not sure if taking MY messages as well
+
+-----------
+Database:
+https://www.fullstackpython.com/blog/postgresql-python-3-psycopg2-ubuntu-1604.html
+http://zetcode.com/python/peewee/
+
+Should use peewee to create the database tables using classes, then in our app we can straightforwardly insert
+
+Have to look at pooling and how manage the connection with opening and closing
+
+## Wishlist
+
+* Debugging
+* Need a more unified way of testing that the applets work
