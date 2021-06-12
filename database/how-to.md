@@ -1,7 +1,10 @@
 # Postgres
 sudo apt-get install postgresql libpq-dev postgresql-client postgresql-client-common
+
 sudo -i -u postgres
+
 createuser ubuntu -P --interactive
+
 createdb test
 
 # PeeWee
